@@ -1,0 +1,55 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mongodb"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id          String       @id @default(cuid()) @map("_id")
+  username    String
+  email       String       @unique
+  profilePic  String
+  clerkUserId String       @unique
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @updatedAt
+  quizResults QuizResult[]
+  quiz2Results Quiz2Result[] // New relationship field
+  quiz3Results Quiz3Result[] // New relationship field
+}
+
+model QuizResult {
+  id             String   @id @default(cuid()) @map("_id")
+  user           User     @relation(fields: [userId], references: [id])
+  userId         String
+  quizScore      Int
+  correctAnswers Int
+  wrongAnswers   Int
+  quizName       String
+  createdAt      DateTime @default(now())
+}
+
+
+model Quiz2Result {
+  id             String   @id @default(cuid()) @map("_id")
+  user           User     @relation(fields: [userId], references: [id])
+  userId         String
+  quizScore      Int
+  correctAnswers Int
+  wrongAnswers   Int
+  quizName       String
+  createdAt      DateTime @default(now())
+}
+
+model Quiz3Result {
+  id             String   @id @default(cuid()) @map("_id")
+  user           User     @relation(fields: [userId], references: [id])
+  userId         String
+  quizScore      Int
+  correctAnswers Int
+  wrongAnswers   Int
+  quizName       String
+  createdAt      DateTime @default(now())
+}
