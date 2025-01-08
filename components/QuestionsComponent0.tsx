@@ -26,21 +26,27 @@ const QuestionsComponent = ({ questions, userId, quizName }: QuizProps) => {
   console.log("currentQuestionIndex", currentQuestionIndex);
   const [showResults, setShowResults] = useState(false);
 
-  const currentState = useCanvasStore((state: any) => state.currentState); // get it from store
+  const currentState = useCanvasStore((state: any) => state.currentState); // its
 
-  const saveCanvasImage2storage = async (index: number) => {
+  const handleInputChange = (questionId: any, value: any) => {
+    setUserAnswers((prev) => ({
+      ...prev,
+      [questionId]: value, // Store the answer for the specific questionId
+    }));
+  };
+
+  const saveCanvasImage = async (index: number) => {
     const mainCanvasId = `canvas-${index}`;
-    //const backgroundCanvasId = `backgroundimage-canvas-${index}`;
+    const backgroundCanvasId = `backgroundimage-canvas-${index}`;
 
     const mainCanvas = document.getElementById(
       mainCanvasId
     ) as HTMLCanvasElement;
-    // const backgroundCanvas = document.getElementById(
-    //   backgroundCanvasId
-    // ) as HTMLCanvasElement;
+    const backgroundCanvas = document.getElementById(
+      backgroundCanvasId
+    ) as HTMLCanvasElement;
 
-    //if (!mainCanvas || !backgroundCanvas) {
-    if (!mainCanvas) {
+    if (!mainCanvas || !backgroundCanvas) {
       console.error("Canvas elements not found");
       return null;
     }
@@ -55,34 +61,28 @@ const QuestionsComponent = ({ questions, userId, quizName }: QuizProps) => {
       return null;
     }
 
-    // tempCtx.drawImage(
-    //   backgroundCanvas,
-    //   0,
-    //   0,
-    //   tempCanvas.width,
-    //   tempCanvas.height
-    // );
+    tempCtx.drawImage(
+      backgroundCanvas,
+      0,
+      0,
+      tempCanvas.width,
+      tempCanvas.height
+    );
     tempCtx.drawImage(mainCanvas, 0, 0, tempCanvas.width, tempCanvas.height);
 
     const dataURL = tempCanvas.toDataURL("image/png");
     localStorage.setItem(`canvasImage-${index}`, dataURL);
   };
 
-  const handleInputChange = (questionId: any, value: any) => {
-    setUserAnswers((prev) => ({
-      ...prev,
-      [questionId]: value, // Store the answer for the specific questionId
-    }));
-  };
-
   const handleNext = async () => {
-    console.log("currentState located in Qcomp.tsx : ", currentState); // this a state define here but fetched from store
-
+    console.log("currentState located in Qcomp.tsx : ", currentState);
     if (questions[currentQuestionIndex].qtype === "graphing-quest") {
-      await saveCanvasImage2storage(currentQuestionIndex); //calling the function here
+      await saveCanvasImage(currentQuestionIndex);
+      // Call the function
+      //retrieveAndLogImageAsJson();
     }
 
-    //if (showResults) return; // Prevent further updates after showing results ()
+    //if (showResults) return; // Prevent further updates after showing results
     if (currentQuestionIndex != questions.length - 1) {
       setCurrentQuestionIndex(currentQuestionIndex + 1);
     } else {

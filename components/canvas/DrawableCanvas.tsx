@@ -216,7 +216,7 @@ const DrawableCanvas = ({
     }
   };
 
-  const downloadCallback2 = () => {
+  const downloadCallback4Json = () => {
     if (canvasInstance.current && backgroundCanvasInstance.current) {
       const canvasData = [];
 
@@ -271,14 +271,15 @@ const DrawableCanvas = ({
   };
 
   const save2Storage = () => {
-    if (canvasInstance.current && backgroundCanvasInstance.current) {
+    //if (canvasInstance.current && backgroundCanvasInstance.current) {
+    if (canvasInstance.current) {
       const canvasData = [];
 
-      // Collect background canvas data if needed
-      if (backgroundCanvasInstance.current) {
-        const backgroundData = backgroundCanvasInstance.current.toJSON(); // Assuming Fabric.js
-        canvasData.push({ background: backgroundData });
-      }
+      // // Collect background canvas data if needed
+      // if (backgroundCanvasInstance.current) {
+      //   const backgroundData = backgroundCanvasInstance.current.toJSON(); // Assuming Fabric.js
+      //   canvasData.push({ background: backgroundData });
+      // }
 
       // Collect main canvas data
       if (canvasInstance.current) {
@@ -348,7 +349,7 @@ const DrawableCanvas = ({
             topPosition={0}
             leftPosition={canvasWidth + 5}
             downloadCallback={downloadCallback}
-            downloadCallback2={downloadCallback2}
+            downloadCallback2={downloadCallback4Json}
             //downloadCallback3={logCanvasData}
             downloadCallback3={save2Storage}
             canUndo={canUndo}

@@ -47,7 +47,7 @@ model Quiz3Result {
   id             String   @id @default(cuid()) @map("_id")
   user           User     @relation(fields: [userId], references: [id])
   userId         String
-  userAnswers   Json //String[]
+  userAnswers    Json //String[]
   quizName       String
   createdAt      DateTime @default(now())
 }
