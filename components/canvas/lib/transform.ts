@@ -1,23 +1,26 @@
-import FabricTool, { ConfigureCanvasProps } from "./fabrictool"
+import FabricTool, { ConfigureCanvasProps } from "./fabrictool";
 
 class TransformTool extends FabricTool {
   configureCanvas(args: ConfigureCanvasProps): () => void {
-    let canvas = this._canvas
-    canvas.isDrawingMode = false
-    canvas.selection = true
-    canvas.forEachObject((o) => (o.selectable = o.evented = true))
+    let canvas = this._canvas;
+    canvas.isDrawingMode = false;
+    canvas.selection = true;
+    canvas.forEachObject((o) => (o.selectable = o.evented = true));
 
     // instead of looking for target of double click,
     // assume double click on object clears the selected object
     const handleDoubleClick = () => {
-      canvas.remove(canvas.getActiveObject())
-    }
+      const activeObject = canvas.getActiveObject();
+      if (activeObject) {
+        canvas.remove(activeObject);
+      }
+    };
 
-    canvas.on("mouse:dblclick", handleDoubleClick)
+    canvas.on("mouse:dblclick", handleDoubleClick);
     return () => {
-      canvas.off("mouse:dblclick", handleDoubleClick)
-    }
+      canvas.off("mouse:dblclick", handleDoubleClick);
+    };
   }
 }
 
-export default TransformTool
+export default TransformTool;
