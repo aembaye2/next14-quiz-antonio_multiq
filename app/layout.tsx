@@ -10,8 +10,8 @@ const raleway = Raleway({
 });
 
 export const metadata: Metadata = {
-  title: "CodeQuiz",
-  description: "Weekly quiz question for developers",
+  title: "Assignment App",
+  description: "Quiz App for Courses",
 };
 
 export default function RootLayout({

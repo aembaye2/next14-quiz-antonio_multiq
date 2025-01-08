@@ -1,0 +1,16 @@
+#first
+npm install prisma --svae-dev 
+
+# then
+ npx prisma init --datasource-provider mongodb
+
+# Then after creating the mongodb database and pasting its url in the .env:
+npx prisma db push  //this part needs admin stuff 
+
+#local compass connection string: mongodb://localhost:27017/
+
+
+
+DATABASE_URL=mongodb+srv://abelembaye:Mankiw50%40@cluster0.auak6.mongodb.net/AmazingHaikuApp?retryWrites=true&w=majority&appName=Cluster0
+
+

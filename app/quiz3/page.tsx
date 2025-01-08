@@ -1,6 +1,8 @@
-import Quiz from "@/components/Quiz";
 import { fetchUsers } from "../(auth)/actions/fetchUsers";
-import { quiz } from "./data"; // Import the quiz data from data.ts
+//import QuizManual from "@/components/Quiz";
+import QuestionsComponent from "@/components/QuestionsComponent";
+//import { quiz } from "./data"; // Import the quiz data from data.ts
+import { quiz } from "./data2"; // Import the quiz data from data2.ts
 
 const quizName = "quiz3";
 
@@ -11,9 +13,21 @@ const page = async () => {
   const user = await fetchUsers();
   const userId = user?.data.user.id;
 
+  // return (
+  //   <>
+  //     {/* <Quiz questions={questions} userId={userId} quizName={quizName} /> */}
+  //     <Quiz questions={questions} userId={userId} quizName={quizName} />
+  //   </>
+  // );
+
   return (
     <>
-      <Quiz questions={questions} userId={userId} quizName={quizName} />
+      {/* <Quiz questions={questions} userId={userId} quizName={quizName} /> */}
+      <QuestionsComponent
+        questions={questions}
+        userId={userId}
+        quizName={quizName}
+      />
     </>
   );
 };

@@ -18,10 +18,15 @@ export async function POST(req: NextRequest) {
       const updatedUserStats = await prisma.quizResult.update({
         where: { id: existingUser.quizResults[0].id },
         data: {
-          quizScore: existingUser.quizResults[0].quizScore + quizScore,
-          correctAnswers:
-            existingUser.quizResults[0].correctAnswers + correctAnswers,
-          wrongAnswers: existingUser.quizResults[0].wrongAnswers + wrongAnswers,
+          // quizScore: existingUser.quiz3Results[0].quizScore + quizScore,
+          // correctAnswers:
+          //   existingUser.quiz3Results[0].correctAnswers + correctAnswers,
+          // wrongAnswers:
+          //   existingUser.quiz3Results[0].wrongAnswers + wrongAnswers,
+          // quizName: quizName,
+          quizScore: 0 + quizScore,
+          correctAnswers: 0 + correctAnswers,
+          wrongAnswers: 0 + wrongAnswers,
           quizName: quizName,
         },
       });

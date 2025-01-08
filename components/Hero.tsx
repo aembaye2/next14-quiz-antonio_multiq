@@ -31,7 +31,7 @@ const Hero = () => {
             href={"/quiz3"}
             className="inline-flex items-center justify-center rounded-md bg-primary px-8 py-3 text-sm font-medium text-gray-50 shadow transition-colors duration-500 hover:bg-primary/80"
           >
-            Begin Quiz 3
+            Begin Assignment 3
           </Link>
         </div>
       </div>

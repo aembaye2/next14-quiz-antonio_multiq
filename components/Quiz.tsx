@@ -25,7 +25,7 @@ const Quiz = ({ questions, userId, quizName }: QuizProps) => {
     correctAnswers: 0,
     wrongAnswers: 0,
   });
-  const maxTimeAllowed: number = 10;
+  const maxTimeAllowed: number = 60;
   const [timeRemaining, setTimeRemaining] = useState(maxTimeAllowed); //adjust this
   const [timerRunning, setTimerRunning] = useState(false);
 
@@ -139,6 +139,14 @@ const Quiz = ({ questions, userId, quizName }: QuizProps) => {
     startTimer();
   };
 
+  const previousQuestion = () => {
+    if (activeQuestion > 0) {
+      setActiveQuestion(activeQuestion - 1);
+      setChecked(false);
+      setSelectedAnswerIndex(null);
+    }
+  };
+
   return (
     <div className="min-h-[500px]">
       <div className="max-w-[1500px] mx-auto w-[90%] flex justify-center py-10 flex-col">
@@ -172,15 +180,24 @@ const Quiz = ({ questions, userId, quizName }: QuizProps) => {
                   </li>
                 ))}
               </ul>
-              <button
-                onClick={nextQuestion}
-                disabled={!checked}
-                className="font-bold"
-              >
-                {activeQuestion === questions.length - 1
-                  ? "Finish"
-                  : "Next Question →"}
-              </button>
+              <div className="flex justify-between mt-4">
+                <button
+                  onClick={previousQuestion}
+                  disabled={activeQuestion === 0}
+                  className="font-bold"
+                >
+                  {activeQuestion === 0 ? "" : "Previous Question ←"}
+                </button>
+                <button
+                  onClick={nextQuestion}
+                  disabled={!checked}
+                  className="font-bold"
+                >
+                  {activeQuestion === questions.length - 1
+                    ? "Finish"
+                    : "Next Question →"}
+                </button>
+              </div>
             </div>
           </>
         ) : (

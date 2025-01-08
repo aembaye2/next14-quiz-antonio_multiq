@@ -1,0 +1,34 @@
+
+# as of 1/6/2025 
+1. As long as graphing is the last questions, by making other type of questions the last, you can have several graphing questions and their image still preserved in the generated pdf file. This is made possible by saving the images in local storage. But still there is a problem of user drawing lost when they go back to the drawing question because on change feature is not useful for such questions. One solution One solution is to send data from DrawableCanvas.tsx to a route.ts with a click and then send again this to QuestionsComponents.tsx and put it in userAnswers array to finally be sent to the database and be used with fetch request to be used as the intial drawing. Another one is to save .json format of the drawing in the localstorage (already done) from DrawableCanvas.tsx and then the QuestionsComponents.tsx to receive this data immediately and add it to userAnswers state and this can easily be saved in database when showResult is True.
+
+2. If (1) is done, then the ability to use stored user's answers as default/starting values ..., which are successfully being stored in database. Post method is used to save data to the route.ts file and then to database; the Get method must be mastered to use data stored in the database in a component.
+
+3. Have restricted login of users to contents based on their courses
+
+4. (partially done) Saving various quizzes grade is partially solved in that we are able to create a collection (table) for each quiz grade; ideally, we want to put them in the same collections as dictionaries or columns
+
+5. Cosmotics: make the UI like that of Antonio's. Blue color and good spacing
+
+# as of 12/20/2024 
+
+1. Create a Quiz4ManualGrading.tsx to do export .json file to database and let the user generate templated pdf file of their answer
+
+2. Create navigation bar for courses and let student have access only to the courses they are enrolled
+
+3. (partially done) Saving various quizzes grade is partially solved in that we are able to create a collection (table) for each quiz grade; ideally, we want to put them in the same collections as dictionaries or columns
+
+
+
+# as of 12/19/2024 
+
+1. With regard to saving to database the result of multiple quizzes:
+
+Try to create 2 one-to-many relations: quiz1Results Quiz1Results[] and quiz1Results Quiz1Results[] and specify them as object instead of string or number and then modify the api and the Quiz.tsx to change them as object instead of separate scalars 
+
+
+2. With regard to modifying the Quiz.tsx to accomodate different quiz types; first this kind of quiz must be graded manually in gradescope; later automatic grading like Pearson might be possible. 
+
+
+
+
