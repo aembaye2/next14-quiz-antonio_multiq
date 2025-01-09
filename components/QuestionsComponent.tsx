@@ -94,29 +94,29 @@ const QuestionsComponent = ({ questions, userId, quizName }: QuizProps) => {
         throw new Error("Quiz name is required to determine the API route.");
       }
 
-      fetch(apiRoute, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          userId: userId,
-          userAnswers: userAnswers,
-          quizName: quizName,
-        }),
-      })
-        .then((response) => {
-          if (!response.ok) {
-            throw new Error("Network response was not working.");
-          }
-          return response.json();
-        })
-        .then((data) => {
-          console.log("Quiz results saved successfully:", data);
-        })
-        .catch((error) => {
-          console.error("Error saving quiz results:", error);
-        });
+      // fetch(apiRoute, {
+      //   method: "POST",
+      //   headers: {
+      //     "Content-Type": "application/json",
+      //   },
+      //   body: JSON.stringify({
+      //     userId: userId,
+      //     userAnswers: userAnswers,
+      //     quizName: quizName,
+      //   }),
+      // })
+      //   .then((response) => {
+      //     if (!response.ok) {
+      //       throw new Error("Network response was not working.");
+      //     }
+      //     return response.json();
+      //   })
+      //   .then((data) => {
+      //     console.log("Quiz results saved successfully:", data);
+      //   })
+      //   .catch((error) => {
+      //     console.error("Error saving quiz results:", error);
+      //   });
     }
   };
 
