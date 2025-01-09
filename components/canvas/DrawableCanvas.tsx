@@ -6,6 +6,12 @@ import CanvasToolbar from "./CanvasToolbar";
 import { useCanvasState } from "./DrawableCanvasState";
 import { tools, FabricTool } from "./lib";
 import { useCanvasStore } from "./useCanvasStore";
+import {
+  downloadCallback,
+  downloadCallback4Json,
+  logCanvasData,
+  save2Storage,
+} from "../helpers";
 
 export interface ComponentArgs {
   index: number;
@@ -189,119 +195,56 @@ const DrawableCanvas = ({
     saveState,
   ]);
 
-  const downloadCallback = () => {
-    if (canvasInstance.current && backgroundCanvasInstance.current) {
-      const tempCanvas = document.createElement("canvas");
-      tempCanvas.width = canvasWidth;
-      tempCanvas.height = canvasHeight;
-      const tempContext = tempCanvas.getContext("2d");
-
-      if (tempContext) {
-        // Draw background canvas onto temp canvas
-        if (backgroundCanvasRef.current) {
-          tempContext.drawImage(backgroundCanvasRef.current, 0, 0);
-        }
-
-        if (canvasRef.current) {
-          tempContext.drawImage(canvasRef.current, 0, 0);
-        }
-
-        // Export temp canvas as image
-        const dataURL = tempCanvas.toDataURL("image/png");
-        const link = document.createElement("a");
-        link.href = dataURL;
-        link.download = "canvas.png";
-        link.click();
-      }
-    }
-  };
-
-  const downloadCallback4Json = () => {
-    if (canvasInstance.current && backgroundCanvasInstance.current) {
-      const canvasData = [];
-
-      // Collect background canvas data if needed (assuming backgroundCanvasRef contains objects or path data)
-      if (backgroundCanvasRef.current) {
-        // Add your logic to extract background drawing data from the background canvas
-        // For example, you might use canvasInstance's `toJSON()` or any specific method for extracting the data
-        const backgroundData = backgroundCanvasInstance.current.toJSON(); // assuming using fabric.js or similar
-        canvasData.push({ background: backgroundData });
-      }
-
-      // Collect main canvas data
-      if (canvasRef.current) {
-        // Assuming canvasInstance is the main drawing canvas, and you want to export its data
-        const mainCanvasData = canvasInstance.current.toJSON(); // Example if using fabric.js
-        canvasData.push({ mainCanvas: mainCanvasData });
-      }
-
-      //// Convert the canvas data to JSON
-      const jsonBlob = new Blob([JSON.stringify(canvasData)], {
-        type: "application/json",
-      });
-      //// Create a link element to trigger the download
-      const link = document.createElement("a");
-      link.href = URL.createObjectURL(jsonBlob);
-      link.download = "canvasData.json";
-      link.click();
-    }
-  };
-
-  const logCanvasData = () => {
-    if (canvasInstance.current && backgroundCanvasInstance.current) {
-      const canvasData = [];
-
-      // Collect background canvas data if needed
-      if (backgroundCanvasInstance.current) {
-        const backgroundData = backgroundCanvasInstance.current.toJSON(); // Assuming Fabric.js
-        canvasData.push({ background: backgroundData });
-      }
-
-      // Collect main canvas data
-      if (canvasInstance.current) {
-        const mainCanvasData = canvasInstance.current.toJSON(); // Assuming Fabric.js
-        canvasData.push({ mainCanvas: mainCanvasData });
-      }
-
-      //// Log the canvas data to the console
-      // console.log( "Combined Canvas Data in DrawableCanvas.tsx:",         JSON.stringify(canvasData, null, 2)      );
-    } else {
-      console.error("Canvas instances not found.");
-    }
-  };
-
-  const save2Storage = () => {
-    //if (canvasInstance.current && backgroundCanvasInstance.current) {
+  // Save the current drawing to localStorage whenever the canvas state changes
+  useEffect(() => {
     if (canvasInstance.current) {
-      const canvasData = [];
+      const saveToLocalStorage = () => {
+        const canvasData = canvasInstance.current
+          ? canvasInstance.current.toJSON()
+          : null;
+        if (canvasData) {
+          localStorage.setItem(
+            `canvasDrawing-${index}`,
+            JSON.stringify(canvasData)
+          );
+          console.log(
+            `Canvas data saved to localStorage for index ${index}:`,
+            canvasData
+          );
+        }
+      };
 
-      // // Collect background canvas data if needed
-      // if (backgroundCanvasInstance.current) {
-      //   const backgroundData = backgroundCanvasInstance.current.toJSON(); // Assuming Fabric.js
-      //   canvasData.push({ background: backgroundData });
-      // }
+      canvasInstance.current.on("object:added", saveToLocalStorage);
+      canvasInstance.current.on("object:modified", saveToLocalStorage);
+      canvasInstance.current.on("object:removed", saveToLocalStorage);
 
-      // Collect main canvas data
-      if (canvasInstance.current) {
-        const mainCanvasData = canvasInstance.current.toJSON(); // Assuming Fabric.js
-        canvasData.push({ mainCanvas: mainCanvasData });
-      }
-
-      // Save the canvas data to localStorage
-      try {
-        //localStorage.setItem("canvasData", JSON.stringify(canvasData));
-        setCurrentState(canvasData);
-        console.log(
-          "Canvas data saved to localStorage and/or currentState in DrawableCanvas.tsx: ",
-          canvasData
-        );
-      } catch (e) {
-        console.error("Error saving canvas data to localStorage:", e);
-      }
-    } else {
-      console.error("Canvas instances not found.");
+      return () => {
+        canvasInstance.current?.off("object:added", saveToLocalStorage);
+        canvasInstance.current?.off("object:modified", saveToLocalStorage);
+        canvasInstance.current?.off("object:removed", saveToLocalStorage);
+      };
     }
-  };
+  }, [canvasInstance.current, index]); // Monitor the index for changes
+
+  // Load the drawing from localStorage when the component mounts
+  useEffect(() => {
+    if (canvasInstance.current) {
+      const savedDrawing = localStorage.getItem(`canvasDrawing-${index}`);
+      if (savedDrawing) {
+        const parsedDrawing = JSON.parse(savedDrawing);
+        if (canvasRef.current) {
+          // Ensure the canvas is properly loaded from localStorage.
+          canvasInstance.current?.loadFromJSON(parsedDrawing, () => {
+            canvasInstance.current?.renderAll();
+          });
+          console.log(
+            `Canvas data loaded from localStorage for index ${index}:`,
+            savedDrawing
+          );
+        }
+      }
+    }
+  }, [canvasInstance.current, index]); // Load the drawing whenever the `index` changes
 
   return (
     <div style={{ position: "relative" }}>

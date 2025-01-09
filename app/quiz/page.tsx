@@ -2,7 +2,7 @@ import Quiz from "@/components/Quiz";
 import { fetchUsers } from "../(auth)/actions/fetchUsers";
 import { quiz } from "./data"; // Import the quiz data from data.ts
 
-const quizName = "quiz1";
+const quizName = "quiz";
 export const dynamic = "force-dynamic";
 
 const page = async () => {

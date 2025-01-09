@@ -127,7 +127,7 @@ const QuestionsComponent = ({ questions, userId, quizName }: QuizProps) => {
   };
 
   return (
-    <div className="min-h-[500px]">
+    <div className="min-h-[100px]">
       <div className="max-w-[1500px] mx-auto w-[90%] flex justify-center py-10 flex-col">
         <form
         // onSubmit={(e) => handleJsonSave(e, questions, userAnswers)}
@@ -283,10 +283,7 @@ const QuestionsComponent = ({ questions, userId, quizName }: QuizProps) => {
             <div className="text-center">
               {/* Results section */}
               <div style={{ marginTop: "20px" }}>
-                <h3>
-                  {" "}
-                  You have successfully completed the Assessement ...! 📈
-                </h3>
+                <h3> You have successfully completed {quizName} ...! 📈</h3>
 
                 {/* <button
                   type="submit"
