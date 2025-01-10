@@ -202,7 +202,10 @@ const Quiz = ({ questions, userId, quizName }: QuizProps) => {
           </>
         ) : (
           <div className="text-center">
-            <h3 className="text-2xl uppercase mb-10">Results 📈</h3>
+            <h3 className="text-2xl uppercase mb-10">
+              {" "}
+              Results of {quizName} 📈
+            </h3>
             <div className="grid lg:grid-cols-3 md:grid-cols-2 gap-10">
               <StatCard
                 title="Percentage"
